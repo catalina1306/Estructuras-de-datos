@@ -1,2 +1,3 @@
 # Estructuras-de-datos
-Repositorio destinado al estudio y práctica de estructuras de datos utilizando C++. Contiene implementaciones desde cero, análisis básico de complejidad y ejemplos de uso, con énfasis en gestión de memoria y diseño limpio.
+Este repositorio documenta mi proceso de aprendizaje de C++ y estructuras de datos, siguiendo una ruta de estudio inspirada en learncpp.com (Recomiendo mucho esta pagina si estas aprendiendo C++ desde 0 ;)).
+Se desarrollan implementaciones propias con énfasis en buenas prácticas, uso de C++ moderno, análisis básico de complejidad y comprensión profunda del funcionamiento interno del lenguaje.
