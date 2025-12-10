@@ -29,9 +29,7 @@ private:
         T* newData = new T[newCapacity];
 
         for (int i = 0; i <= top; i++)
-        {
-            newData[i] = data[i];
-        }
+            newData[i] = std::move(data[i]);
 
         delete[] data;
         data = newData;
@@ -60,35 +58,102 @@ public:
         delete[] data;
     }
 
-    // retorna true si la pila esta vacia
-    bool isEmpty() const
+    // constructor de copia
+    Stack(const Stack& other)
     {
-        return top == -1;
+        capacity = other.capacity;
+        origialCapacity = other.origialCapacity;
+        top = other.top;
+
+        data = new T[capacity];
+        for (int i = 0; i <= top; ++i)
+            data[i] = other.data[i];
     }
+    
+    // asignacion por copia
+    Stack& operator=(const Stack& other)
+    {
+        if (this == &other)
+            return *this;
+
+        delete[] data;
+
+        capacity = other.capacity;
+        origialCapacity = other.origialCapacity;
+        top = other.top;
+
+        data = new T[capacity];
+        for (int i = 0; i <= top; ++i)
+            data[i] = other.data[i];
+
+        return *this;
+    }
+
+    // constructor de movimiento
+    Stack(Stack&& other) noexcept
+    {
+        data = other.data;
+        capacity = other.capacity;
+        origialCapacity = other.origialCapacity;
+        top = other.top;
+
+        other.data = nullptr;
+        other.capacity = 0;
+        other.top = -1;
+    }
+
+    // retorna true si la pila esta vacia
+    bool isEmpty() const { return top == -1; }
 
     // retorna true si la pila esta llena
-    bool isFull() const
-    {
-        return top == capacity - 1;
-    }
+    bool isFull() const { return top == capacity - 1; }
 
     // retorna la cantidad de espacios utilizados
-    int size() const
-    {
-        return top + 1;
-    }
+    int size() const { return top + 1; }
 
     // limpia la pila manteniendo la configuracion original
     void clear()
     {
-        top = -1;
         delete[] data;
         capacity = origialCapacity;
         data = new T[origialCapacity];
+        top = -1;
+    }
+
+    bool push(T value)
+    {   
+        if (isFull())
+            resize(capacity*2);
+        
+        top++;
+        data[top] =  value;
+        return true;
+    }
+
+    bool pop()
+    {
+        if (isEmpty())
+            throw std::out_of_range("Empty Stack");
+        
+        top--;
+
+        if (size() < (capacity/4))
+            resize(int(capacity * (3.0/4.0)));
+
+        return true;
+        
+    }
+
+    const T& peek() const
+    {   
+        if (isEmpty())
+            throw std::out_of_range("Empty Stack");
+        
+        return data[top];
     }
 
     // muestra visual de la pila
-    void show()
+    void show() const
     {
         for (int i = top ; i >=0; i--)
         {
@@ -97,45 +162,6 @@ public:
             std::cout << " ---\n";
             std::cout << "  ^  \n" ;
             std::cout << "  |  \n";
-        }
-    }
-
-    bool push(T value)
-    {   
-        if (isFull())
-        {
-            resize(capacity*2);
-        }
-        top++;
-        data[top] =  value;
-        return true;
-    }
-
-    bool pop()
-    {
-        if (isEmpty()){
-            throw std::out_of_range("Empty Stack");
-        }
-        else 
-        {   
-            if (size() < (capacity/4))
-            {
-                resize(int(capacity * (3.0/4.0)));
-            }
-            top--;
-            return true;
-        }
-    }
-
-    T peek() const
-    {   
-        if (isEmpty())
-        {
-            throw std::out_of_range("Empty Stack");
-        }   
-        else 
-        {
-            return data[top];
         }
     }
 };
