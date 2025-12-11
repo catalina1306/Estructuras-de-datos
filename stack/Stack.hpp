@@ -155,13 +155,9 @@ class Stack
         // muestra visual de la pila
         void show() const
         {
-            for (int i = top ; i >=0; i--)
+            for (int i = 0 ; i >=top; i++)
             {
-                std::cout << " ---\n";
-                std::cout << "| " << data[i] <<" |\n" ;
-                std::cout << " ---\n";
-                std::cout << "  ^  \n" ;
-                std::cout << "  |  \n";
+                std::cout << "[" << data[i] <<"]-> " ;
             }
         }
-};
+};  
