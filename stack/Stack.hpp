@@ -8,19 +8,21 @@ class Stack
 {
     private:
 
-        // arreglo dinamico
+        // dynamic array
         T* data;            
 
-        // maximo de elementos
+        // maximum number of elements
         int capacity;
-        int origialCapacity;
+        int origialCapacity;    
         
-        // indice del ultimo elemento agregado
+        // index of the last inserted element
         int top;            
 
-        /*Reajuste de tamaño segun necesidad
-        Si esta ocupado menos de 1/4 de la capacidad se reduce la capacidad a 3/4 
-        Si esta a su capacidad maxima se duplica la capacidad*/ 
+        /*
+            Resizes the internal array according to need.
+            - If the new capacity is lower than the number of stored elements or 0, throw an exception.
+            - Elements are moved to a new dynamic array with updated capacity.
+        */
         void resize(int newCapacity)
         {
             if (newCapacity < size() || newCapacity == 0)
@@ -39,7 +41,7 @@ class Stack
 
     public:
 
-        // contructor
+        // constructor
         Stack(int cap)
         {
             if (cap <=0)
@@ -58,7 +60,7 @@ class Stack
             delete[] data;
         }
 
-        // constructor de copia
+        // copy constructor
         Stack(const Stack& other)
         {
             capacity = other.capacity;
@@ -70,7 +72,7 @@ class Stack
                 data[i] = other.data[i];
         }
         
-        // asignacion por copia
+        // copy assignment
         Stack& operator=(const Stack& other)
         {
             if (this == &other)
@@ -89,7 +91,7 @@ class Stack
             return *this;
         }
 
-        // constructor de movimiento
+        // move constructor
         Stack(Stack&& other) noexcept
         {
             data = other.data;
@@ -102,16 +104,16 @@ class Stack
             other.top = -1;
         }
 
-        // retorna true si la pila esta vacia
+        // returns true if the stack is empty
         bool isEmpty() const { return top == -1; }
 
-        // retorna true si la pila esta llena
+        // returns true if the stack is full
         bool isFull() const { return top == capacity - 1; }
 
-        // retorna la cantidad de espacios utilizados
+        // returns the number of used positions
         int size() const { return top + 1; }
 
-        // limpia la pila manteniendo la configuracion original
+        // clears the stack while keeping original configuration
         void clear()
         {
             delete[] data;
@@ -120,6 +122,7 @@ class Stack
             top = -1;
         }
 
+        // inserts a new element at the top
         bool push(T value)
         {   
             if (isFull())
@@ -130,7 +133,8 @@ class Stack
             return true;
         }
 
-        bool pop()
+        // removes the top element
+        T pop()
         {
             if (isEmpty())
                 throw std::out_of_range("Empty Stack");
@@ -140,10 +144,11 @@ class Stack
             if (size() < (capacity/4))
                 resize(int(capacity * (3.0/4.0)));
 
-            return true;
+            return data[top+1];
             
         }
 
+        // returns reference to the element at the top
         const T& peek() const
         {   
             if (isEmpty())
@@ -152,12 +157,12 @@ class Stack
             return data[top];
         }
 
-        // muestra visual de la pila
+         // visual representation of the stack
         void show() const
         {
-            for (int i = 0 ; i >=top; i++)
+            for (int i = top ; i >=0; i--)
             {
-                std::cout << "[" << data[i] <<"]-> " ;
+                std::cout << "[" << data[i] <<"] <-" ;
             }
         }
 };  
